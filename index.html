@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ThinkFast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div class="logo">Think <em>Fast</em></div>
+      <div class="header-right">
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="autoBtn">Solo</button>
+          <button class="mode-btn" id="manualBtn">Classroom</button>
+        </div>
+        <div class="toggle-wrap">
+          <span class="toggle-label">Light</span>
+          <label class="toggle" title="Toggle theme">
+            <input type="checkbox" id="themeToggle" checked />
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </label>
+          <span class="toggle-label">Dark</span>
+        </div>
+        <button class="cog-btn" id="cogBtn" title="Settings" aria-label="Settings">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+    <div class="settings-overlay" id="settingsOverlay">
+      <div class="settings-panel">
+        <div class="settings-title">Settings</div>
+        <div class="settings-row">
+          <span class="settings-row-label">Reading Speed</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="range" id="speedSlider" min="10" max="200" value="50" />
+            <span class="speed-val" id="speedValue">50 cps</span>
+          </div>
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label">Answer Timer</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="range" id="timerSlider" min="5" max="30" value="10" />
+            <span class="speed-val" id="timerValue">10 s</span>
+          </div>
+        </div>
+        <div class="settings-row">
+          <span class="settings-row-label">Text Size</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <input type="range" id="sizeSlider" min="80" max="200" value="100" />
+            <span class="speed-val" id="sizeValue">100%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main class="main">
+      <div class="status-bar">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="status-label" id="statusLabel">Ready</span>
+        <span class="sentence-counter" id="sentenceCounter"></span>
+      </div>
+      <div class="question-card">
+        <div class="question-meta">
+          <span id="qYear">—</span>
+          <span id="qTournament">—</span>
+          <span id="qLevel">HS</span>
+          <span id="qCategory">—</span>
+        </div>
+        <div class="question-text" id="questionDisplay">
+          <span style="color:var(--text3);font-family:'DM Sans',sans-serif;font-size:1rem;font-style:italic;">Press Reset to begin.</span>
+        </div>
+        <div class="sentence-progress" id="sentenceProgress"></div>
+      </div>
+      <div class="answer-card" id="answerCard">
+        <div>
+          <div class="answer-label">Correct Answer</div>
+          <div class="answer-text" id="answerText"></div>
+        </div>
+        <button class="action-btn primary" id="nextQuestion">Next Question →</button>
+      </div>
+      <div class="timer-display" id="timerDisplay">
+        <span class="timer-number" id="timerNumber">10</span>
+        <div class="timer-bar-wrap">
+          <div class="timer-bar" id="timerBar" style="width:100%"></div>
+        </div>
+      </div>
+      <div class="inline-answer hidden" id="inlineAnswer">
+        <div class="inline-answer-header">
+          <span class="inline-answer-label">Your Answer</span>
+          <div class="buzz-timer-display">
+            <span class="timer-number" id="buzzTimerNumber">5</span>
+            <div class="timer-bar-wrap">
+              <div class="timer-bar" id="buzzTimerBar" style="width:100%"></div>
+            </div>
+          </div>
+        </div>
+        <div class="inline-answer-row">
+          <input class="inline-answer-input" id="inlineInput" type="text" placeholder="Type your answer…" autocomplete="off" />
+          <button class="action-btn primary" id="inlineSubmit">Submit</button>
+          <button class="action-btn" id="inlineCancel">Cancel</button>
+        </div>
+        <div class="inline-result" id="inlineResult"></div>
+      </div>
+      <div class="buzz-section">
+        <button class="buzz-btn" id="buzzBtn">Buzz In</button>
+        <p class="buzz-hint">
+          <kbd>B</kbd> to buzz &nbsp;·&nbsp; <kbd>Space</kbd> to advance
+        </p>
+      </div>
+      <div class="actions">
+        <button class="action-btn hidden" id="revealBtn">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg> Reveal Answer </button>
+        <button class="action-btn hidden" id="nextSentenceBtn">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6" />
+          </svg> Next Sentence </button>
+        <button class="action-btn" id="resetBtn">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="1 4 1 10 7 10" />
+            <path d="M3.51 15a9 9 0 102.13-9.36L1 10" />
+          </svg> Reset </button>
+      </div>
+    </main>
+    <!-- ANSWER MODAL -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal">
+        <div class="modal-label" id="modalLabel">Your Answer</div>
+        <input class="modal-input" id="modalInput" type="text" placeholder="Type your answer…" autocomplete="off" />
+        <div class="modal-result" id="modalResult"></div>
+        <div class="modal-actions">
+          <button class="action-btn" id="modalCancel">Cancel</button>
+          <button class="action-btn primary" id="modalSubmit">Submit</button>
+        </div>
+      </div>
+    </div>
+    <section class="history-section" id="historySection">
+      <div class="history-header">
+        <span class="history-title">Past Questions</span>
+        <span class="history-count" id="historyCount">0</span>
+      </div>
+      <div class="history-list" id="historyList"></div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/fuzzball@2.1.2/dist/fuzzball.umd.min.js" crossorigin="anonymous"></script>
+    <script src="src/main.js"></script>
+    <script>
+      // Text size slider
+      const sizeSlider = document.getElementById('sizeSlider');
+      const sizeValue  = document.getElementById('sizeValue');
+
+      sizeSlider.addEventListener('input', () => {
+        const pct = sizeSlider.value;
+        sizeValue.textContent = pct + '%';
+        document.documentElement.style.setProperty('--text-scale', pct / 100);
+      });
+    </script>
+  </body>
+</html>
