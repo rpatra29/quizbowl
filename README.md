@@ -16,4 +16,4 @@ python3 -m http.server 8000
 
 Then open http://localhost:8000 in your browser.
 
-If you want a full Tailwind build pipeline, I can scaffold `package.json` and Tailwind config next.
+If you want a full Tailwind build pipeline, I can scaffold `package.json` and Tailwind config next.# quizbowl
