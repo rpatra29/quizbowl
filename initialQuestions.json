@@ -1,114 +1,34 @@
 [
   {
-    "answer": "The Water Cycle",
-    "clue": "This process describes how water moves around Earth. It includes evaporation, condensation, and precipitation. It explains how water travels between oceans, clouds, and land."
+    "answer": "Transcontinental Railroad",
+    "clue": "Before this development, moving products like food, cloth, and tools across the country took many months and was very expensive. Farmers, miners, and factory owners struggled to get their goods to customers on the other side of the country. Once this was completed, businesses could ship products from coast to coast in about a week, transforming the American economy."
   },
   {
-    "answer": "Evaporation",
-    "clue": "This process happens when liquid water turns into water vapor. Heat from the sun usually causes it. It is an important step in the water cycle."
+    "answer": "Union Pacific Railroad",
+    "clue": "This company was one of the two railroads that built the Transcontinental Railroad, and it started building from the east. Its workers, many of them Irish immigrants and Civil War veterans, laid tracks heading west across the flat Great Plains. It began its route in Omaha, Nebraska, and raced to lay as many miles of track as possible."
   },
   {
-    "answer": "Condensation",
-    "clue": "This process occurs when water vapor cools and changes into liquid water. It forms clouds in the sky. It is another key part of the water cycle."
+    "answer": "Sierra Nevada mountains",
+    "clue": "This was a famous, difficult obstacle that workers on the Central Pacific Railroad could not go around and had to go through. Using explosives like black powder and a new chemical called nitroglycerin, workers carved a path through solid rock. This enormous range of mountains in California tested the railroad builders more than any other part of the route."
   },
   {
-    "answer": "Precipitation",
-    "clue": "This occurs when water falls from clouds to Earth. It can include rain, snow, sleet, or hail. It happens when clouds become too heavy with water droplets."
+    "answer": "Chinese immigrant workers",
+    "clue": "This group of workers was hired by the Central Pacific Railroad and made up a large portion of the railroad's workforce. They came from a country in East Asia and were known for working incredibly hard through dangerous mountain terrain. They were paid less than other workers, but helped blast and carve the railroad through the Sierra Nevada mountains in California."
   },
   {
-    "answer": "Food Chain",
-    "clue": "This shows how energy moves from one living thing to another. It usually starts with the sun and plants. Animals eat other organisms to get energy."
+    "answer": "The telegraph",
+    "clue": "This invention worked alongside the transcontinental railroad and helped connect the country in a different way — through communication instead of transportation. Wires were strung along the railroad's route as it was being built, allowing messages to travel coast to coast almost instantly. When the final spike was struck in 1869, this technology carried the news to the rest of the nation in seconds."
   },
   {
-    "answer": "Ecosystem",
-    "clue": "This includes living and nonliving things interacting in the same place. Plants, animals, water, and soil can all be part of it. Forests, deserts, and ponds are examples."
+    "answer": "Promontory Summit, Utah",
+    "clue": "This remote location in the American West became famous for a single day in May 1869. Two massive construction crews, one working from the east and one from the west, were racing toward each other for years before they finally met here. It is the place where the last spike of the transcontinental railroad was driven and the continent was connected by rail for the first time."
   },
   {
-    "answer": "Producer",
-    "clue": "This organism can make its own food using sunlight. Plants and algae are examples. They form the base of most food chains."
+    "answer": "The Golden Spike",
+    "clue": "This object was driven into the ground at a special ceremony to mark the completion of the transcontinental railroad. Unlike ordinary railroad spikes, this one was made from a precious metal and became a symbol of the great achievement. A telegraph was connected to it so that when it was tapped with a hammer, the whole country would instantly know the railroad was done."
   },
   {
-    "answer": "Consumer",
-    "clue": "This organism cannot make its own food. It must eat plants or other animals to survive. Many animals fall into this category."
-  },
-  {
-    "answer": "Decomposer",
-    "clue": "This organism breaks down dead plants and animals. Fungi and bacteria often perform this role. They return nutrients to the soil."
-  },
-  {
-    "answer": "Habitat",
-    "clue": "This is the natural home of a plant or animal. It provides food, water, and shelter. Different species need different types of these places to survive."
-  },
-  {
-    "answer": "Adaptation",
-    "clue": "This is a feature that helps an organism survive in its environment. It can be a physical trait or behavior. Camouflage and thick fur are examples."
-  },
-  {
-    "answer": "Gravity",
-    "clue": "This force pulls objects toward Earth. It is the reason things fall when dropped. It also keeps planets in orbit around the sun."
-  },
-  {
-    "answer": "Friction",
-    "clue": "This force happens when two surfaces rub against each other. It slows objects down. Without it, walking would be very difficult."
-  },
-  {
-    "answer": "Magnet",
-    "clue": "This object can attract certain metals like iron. It has north and south poles. Opposite poles attract while like poles repel."
-  },
-  {
-    "answer": "Electric Circuit",
-    "clue": "This is a closed path that electricity follows. It usually includes a power source, wires, and a device like a light bulb. The path must be complete for electricity to flow."
-  },
-  {
-    "answer": "Energy",
-    "clue": "This is the ability to do work or cause change. It can exist in forms such as heat, light, and motion. The sun is a major source of it for Earth."
-  },
-  {
-    "answer": "Heat",
-    "clue": "This form of energy moves from warmer objects to cooler ones. It can cause changes in temperature. It often comes from the sun or burning fuels."
-  },
-  {
-    "answer": "Solid",
-    "clue": "This state of matter has a definite shape and volume. The particles are packed closely together. Examples include ice, wood, and metal."
-  },
-  {
-    "answer": "Liquid",
-    "clue": "This state of matter has a definite volume but no fixed shape. It takes the shape of its container. Water is a common example."
-  },
-  {
-    "answer": "Gas",
-    "clue": "This state of matter has no definite shape or volume. The particles spread out and move freely. Air is a mixture of these substances."
-  },
-  {
-    "answer": "Weather",
-    "clue": "This describes the conditions of the atmosphere at a certain place and time. It includes temperature, precipitation, and wind. It can change from day to day."
-  },
-  {
-    "answer": "Climate",
-    "clue": "This describes the long-term weather patterns of a region. It is based on data collected over many years. Deserts and rainforests have very different ones."
-  },
-  {
-    "answer": "Erosion",
-    "clue": "This process moves soil and rock from one place to another. Water, wind, and ice can cause it. It slowly changes Earth’s surface."
-  },
-  {
-    "answer": "Weathering",
-    "clue": "This process breaks down rocks into smaller pieces. It can happen because of water, wind, or temperature changes. It often occurs before erosion."
-  },
-  {
-    "answer": "Fossil",
-    "clue": "This is the preserved remains or trace of a living organism from long ago. They are often found in rock layers. Scientists study them to learn about ancient life."
-  },
-  {
-    "answer": "Solar System",
-    "clue": "This system includes the sun and everything that orbits it. Planets, moons, asteroids, and comets are part of it. Earth is one of the planets in this system."
-  },
-  {
-    "answer": "The Sun",
-    "clue": "This star is at the center of our solar system. It provides light and heat to Earth. Plants use its energy to grow."
-  },
-  {
-    "answer": "Moon",
-    "clue": "This natural satellite orbits Earth. It reflects sunlight, which is why we can see it at night. Its phases change during the month."
+    "answer": "Leland Stanford",
+    "clue": "This man was the governor of California and one of the four businessmen who helped found the Central Pacific Railroad. He was so important to the project that he was given the honor of driving the final spike into the ground at the completion ceremony. He later used his fortune to found one of the world's most famous universities in California, which still bears his family's name today."
   }
 ]
