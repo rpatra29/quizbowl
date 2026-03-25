@@ -13,7 +13,9 @@ let state = {
   readInterval: null,
   timerInterval: null,
   timeRemaining: 10,
-  history: []
+  history: [],
+  tables: [],         // { name, score, correct, wrong }
+  awardedThisQ: false // prevent double-awarding per question
 };
 
 const $ = id => document.getElementById(id);
@@ -69,7 +71,16 @@ const els = {
   inlineSubmit: $('inlineSubmit'),
   inlineCancel: $('inlineCancel'),
   buzzTimerNumber: $('buzzTimerNumber'),
-  buzzTimerBar: $('buzzTimerBar')
+  buzzTimerBar: $('buzzTimerBar'),
+  tablesSection: $('tablesSection'),
+  tablesGrid: $('tablesGrid'),
+  tablesCount: $('tablesCount'),
+  tablesAddRow: $('tablesAddRow'),
+  tableNameInput: $('tableNameInput'),
+  addTableBtn: $('addTableBtn'),
+  tablesAward: $('tablesAward'),
+  awardPoints: $('awardPoints'),
+  awardNobody: $('awardNobody')
 };
 
 function parseSentences(t) {
@@ -108,10 +119,14 @@ function initQuestion() {
   state.sentIdx = 0;
   state.isBuzzed = false;
   state.isDone = false;
+  state.awardedThisQ = false;
+  state._awardedIdx = -1;
+  state._awardedPts = 0;
   els.questionDisplay.innerHTML = '';
   els.answerCard.classList.remove('visible');
   els.timerDisplay.classList.remove('visible');
   closeInlineAnswer();
+  if (!state.isAuto) renderTables();
   if (state.isAuto) {
     els.revealBtn.classList.add('hidden');
     els.buzzBtn.disabled = false;
@@ -169,6 +184,7 @@ function startReading() {
       state.sentIdx++;
       updateCounter();
       updatePips();
+      if (!state.isAuto) renderTables();
       if (state.sentIdx < state.sentences.length) {
         if (state.isAuto && !state.isBuzzed) setTimeout(startReading, 500);
         else if (!state.isAuto) setStatus('', 'Waiting');
@@ -304,6 +320,7 @@ function showAnswer() {
   els.timerDisplay.classList.remove('visible');
   els.revealBtn.classList.add('hidden');
   setStatus('done', 'Revealed');
+  if (!state.isAuto) renderTables();
 }
 
 function startTimer() {
@@ -366,6 +383,122 @@ function renderHistory() {
   });
 }
 
+// ── Classroom Tables ─────────────────────────────────────
+
+const SCORING = [300, 200, 100, 50]; // after sentence 1, 2, 3, full/4+
+
+function getPointsForSentence() {
+  // sentIdx = how many sentences have been fully read
+  // 1 → 300, 2 → 200, 3 → 100, 4+ → 50
+  if (state.sentIdx === 0) return SCORING[0];
+  const idx = Math.min(state.sentIdx, SCORING.length) - 1;
+  return SCORING[idx];
+}
+
+function addTable(name) {
+  if (state.tables.length >= 12) return;
+  name = name.trim();
+  if (!name) return;
+  state.tables.push({ name, score: 0, correct: 0, wrong: 0 });
+  renderTables();
+  els.tableNameInput.value = '';
+}
+
+function removeTable(idx) {
+  state.tables.splice(idx, 1);
+  renderTables();
+}
+
+function renderTables() {
+  els.tablesCount.textContent = state.tables.length + ' / 12';
+  els.tablesAddRow.style.display = state.tables.length >= 12 ? 'none' : 'flex';
+
+  els.tablesGrid.innerHTML = '';
+  const pts = getPointsForSentence();
+  const canAward = !state.isAuto && state.tables.length > 0 && !state.awardedThisQ && state.sentIdx > 0;
+
+  state.tables.forEach((t, i) => {
+    const card = document.createElement('div');
+    card.className = 'table-card' + (canAward ? ' clickable' : '');
+    if (state.awardedThisQ && state._awardedIdx === i) card.classList.add('awarded');
+
+    card.innerHTML = `
+      <button class="table-card-remove" title="Remove table">&times;</button>
+      <div class="table-card-top">
+        <span class="table-card-name">${t.name}</span>
+        <span class="table-card-score">${t.score}</span>
+      </div>
+      <div class="table-card-stats">${t.correct}W ${t.wrong}L</div>`;
+    card.querySelector('.table-card-remove').addEventListener('click', e => {
+      e.stopPropagation();
+      removeTable(i);
+    });
+    if (canAward) {
+      card.addEventListener('click', () => awardTable(i, pts));
+    }
+    els.tablesGrid.appendChild(card);
+  });
+
+  updateAwardInfo();
+}
+
+function updateAwardInfo() {
+  if (!state.tables.length || state.isAuto) {
+    els.tablesAward.classList.add('hidden');
+    return;
+  }
+  const pts = getPointsForSentence();
+  if (state.awardedThisQ) {
+    els.awardPoints.textContent = state._awardedIdx >= 0
+      ? `Awarded ${state._awardedPts} pts to ${state.tables[state._awardedIdx].name}`
+      : 'No points awarded';
+    els.awardNobody.disabled = true;
+    els.tablesAward.classList.remove('hidden');
+  } else if (state.sentIdx > 0) {
+    els.awardPoints.textContent = `${pts} pts — click a table to award`;
+    els.awardNobody.disabled = false;
+    els.tablesAward.classList.remove('hidden');
+  } else {
+    els.awardPoints.textContent = `${pts} pts after first sentence`;
+    els.awardNobody.disabled = true;
+    els.tablesAward.classList.remove('hidden');
+  }
+}
+
+function hideAwardPanel() {
+  els.tablesAward.classList.add('hidden');
+}
+
+function awardTable(idx, pts) {
+  if (state.awardedThisQ) return;
+  state.tables[idx].score += pts;
+  state.tables[idx].correct++;
+  state.awardedThisQ = true;
+  state._awardedIdx = idx;
+  state._awardedPts = pts;
+  renderTables();
+}
+
+function toggleTablesVisibility() {
+  if (state.isAuto) {
+    els.tablesSection.classList.add('hidden');
+  } else {
+    els.tablesSection.classList.remove('hidden');
+    renderTables();
+  }
+}
+
+els.addTableBtn.addEventListener('click', () => addTable(els.tableNameInput.value));
+els.tableNameInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') addTable(els.tableNameInput.value);
+});
+els.awardNobody.addEventListener('click', () => {
+  state.awardedThisQ = true;
+  state._awardedIdx = -1;
+  state._awardedPts = 0;
+  renderTables();
+});
+
 // ── Settings ──────────────────────────────────────────────
 
 let settingsOpen = false;
@@ -415,6 +548,7 @@ els.autoBtn.addEventListener('click', () => {
   if (els.buzzSection) els.buzzSection.style.display = 'flex';
   if (els.buzzBtn) els.buzzBtn.style.display = '';
   if (els.buzzHint) els.buzzHint.innerHTML = '<kbd>Space</kbd> to buzz &nbsp;·&nbsp; <kbd>J</kbd> for next question (Solo)';
+  toggleTablesVisibility();
   initQuestion();
 });
 
@@ -428,6 +562,7 @@ els.manualBtn.addEventListener('click', () => {
   if (els.buzzSection) els.buzzSection.style.display = 'flex';
   if (els.buzzBtn) els.buzzBtn.style.display = 'none';
   if (els.buzzHint) els.buzzHint.innerHTML = '<kbd>Space</kbd> to reveal answer &nbsp;·&nbsp; <kbd>J</kbd> for next sentence (Classroom)';
+  toggleTablesVisibility();
   stopTimer();
   els.timerDisplay.classList.remove('visible');
   initQuestion();
