@@ -14,8 +14,9 @@ let state = {
   timerInterval: null,
   timeRemaining: 10,
   history: [],
-  tables: [],         // { name, score, correct, wrong }
-  awardedThisQ: false // prevent double-awarding per question
+  tables: [],         // { name, score, correct, wrong, awardedThisQ }
+  awardedThisQ: false,
+  noneAwardedThisQ: false
 };
 
 const $ = id => document.getElementById(id);
@@ -120,8 +121,10 @@ function initQuestion() {
   state.isBuzzed = false;
   state.isDone = false;
   state.awardedThisQ = false;
+  state.noneAwardedThisQ = false;
   state._awardedIdx = -1;
   state._awardedPts = 0;
+  state.tables.forEach(t => { t.awardedThisQ = false; });
   els.questionDisplay.innerHTML = '';
   els.answerCard.classList.remove('visible');
   els.timerDisplay.classList.remove('visible');
@@ -399,7 +402,7 @@ function addTable(name) {
   if (state.tables.length >= 12) return;
   name = name.trim();
   if (!name) return;
-  state.tables.push({ name, score: 0, correct: 0, wrong: 0 });
+  state.tables.push({ name, score: 0, correct: 0, wrong: 0, awardedThisQ: false });
   renderTables();
   els.tableNameInput.value = '';
 }
@@ -415,12 +418,13 @@ function renderTables() {
 
   els.tablesGrid.innerHTML = '';
   const pts = getPointsForSentence();
-  const canAward = !state.isAuto && state.tables.length > 0 && !state.awardedThisQ && state.sentIdx > 0;
+  const scoringActive = !state.isAuto && state.tables.length > 0 && state.sentIdx > 0 && !state.noneAwardedThisQ;
 
   state.tables.forEach((t, i) => {
+    const tableCanAward = scoringActive && !t.awardedThisQ;
     const card = document.createElement('div');
-    card.className = 'table-card' + (canAward ? ' clickable' : '');
-    if (state.awardedThisQ && state._awardedIdx === i) card.classList.add('awarded');
+    card.className = 'table-card' + (tableCanAward ? ' clickable' : '');
+    if (t.awardedThisQ) card.classList.add('awarded');
 
     card.innerHTML = `
       <button class="table-card-remove" title="Remove table">&times;</button>
@@ -433,7 +437,7 @@ function renderTables() {
       e.stopPropagation();
       removeTable(i);
     });
-    if (canAward) {
+    if (tableCanAward) {
       card.addEventListener('click', () => awardTable(i, pts));
     }
     els.tablesGrid.appendChild(card);
@@ -448,15 +452,18 @@ function updateAwardInfo() {
     return;
   }
   const pts = getPointsForSentence();
-  if (state.awardedThisQ) {
-    els.awardPoints.textContent = state._awardedIdx >= 0
-      ? `Awarded ${state._awardedPts} pts to ${state.tables[state._awardedIdx].name}`
-      : 'No points awarded';
+  if (state.noneAwardedThisQ) {
+    els.awardPoints.textContent = 'No points awarded';
     els.awardNobody.disabled = true;
     els.tablesAward.classList.remove('hidden');
   } else if (state.sentIdx > 0) {
-    els.awardPoints.textContent = `${pts} pts — click a table to award`;
-    els.awardNobody.disabled = false;
+    const awarded = state.tables.filter(t => t.awardedThisQ).map(t => t.name);
+    if (awarded.length > 0) {
+      els.awardPoints.textContent = `Awarded ${state._awardedPts} pts · ${awarded.join(', ')} · click others to award`;
+    } else {
+      els.awardPoints.textContent = `${pts} pts — click a table to award`;
+    }
+    els.awardNobody.disabled = awarded.length > 0;
     els.tablesAward.classList.remove('hidden');
   } else {
     els.awardPoints.textContent = `${pts} pts after first sentence`;
@@ -470,9 +477,10 @@ function hideAwardPanel() {
 }
 
 function awardTable(idx, pts) {
-  if (state.awardedThisQ) return;
+  if (state.tables[idx].awardedThisQ || state.noneAwardedThisQ) return;
   state.tables[idx].score += pts;
   state.tables[idx].correct++;
+  state.tables[idx].awardedThisQ = true;
   state.awardedThisQ = true;
   state._awardedIdx = idx;
   state._awardedPts = pts;
@@ -494,6 +502,7 @@ els.tableNameInput.addEventListener('keydown', e => {
 });
 els.awardNobody.addEventListener('click', () => {
   state.awardedThisQ = true;
+  state.noneAwardedThisQ = true;
   state._awardedIdx = -1;
   state._awardedPts = 0;
   renderTables();
