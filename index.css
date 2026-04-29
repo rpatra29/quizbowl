@@ -902,6 +902,191 @@ input[type=range] {
   color: var(--text);
 }
 
+/* CLASSROOM TABLES */
+.tables-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  padding: 20px 24px;
+}
+
+.tables-section.hidden {
+  display: none;
+}
+
+.tables-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tables-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.tables-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--accent);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 1px 8px;
+  margin-left: auto;
+}
+
+.tables-add-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.tables-add-input {
+  flex: 1;
+  max-width: 200px;
+  padding: 7px 12px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: border-color .15s;
+}
+
+.tables-add-input:focus {
+  border-color: var(--accent);
+}
+
+.tables-add-input::placeholder {
+  color: var(--text3);
+}
+
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.table-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  transition: border-color .15s, background .15s, box-shadow .15s;
+}
+
+.table-card.clickable {
+  cursor: pointer;
+  border-color: var(--border2);
+}
+
+.table-card.clickable:hover {
+  border-color: var(--green);
+  background: var(--bg2);
+  box-shadow: 0 0 0 1px var(--green);
+}
+
+.table-card.clickable:active {
+  transform: scale(.97);
+}
+
+.table-card.awarded {
+  border-color: var(--green);
+  background: var(--green);
+}
+
+.table-card.awarded .table-card-name,
+.table-card.awarded .table-card-score,
+.table-card.awarded .table-card-stats {
+  color: #fff;
+}
+
+.table-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.table-card-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-card-score {
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--accent);
+}
+
+.table-card-stats {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: .04em;
+}
+
+.table-card-remove {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  background: none;
+  border: none;
+  color: var(--text3);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 2px 4px;
+  opacity: 0;
+  transition: opacity .15s, color .15s;
+}
+
+.table-card:hover .table-card-remove {
+  opacity: 1;
+}
+
+.table-card-remove:hover {
+  color: var(--red);
+}
+
+/* Award info */
+.tables-award {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tables-award.hidden {
+  display: none;
+}
+
+.award-points {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--accent);
+}
+
+#awardNobody {
+  font-size: 12px;
+  padding: 6px 14px;
+  flex-shrink: 0;
+}
+
 @media (max-width: 620px) {
   .header {
     flex-wrap: wrap;

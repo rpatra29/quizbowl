@@ -113,6 +113,22 @@
           <kbd>B</kbd> to buzz &nbsp;·&nbsp; <kbd>Space</kbd> to advance
         </p>
       </div>
+      <!-- CLASSROOM TABLES (scoring) -->
+      <div class="tables-section hidden" id="tablesSection">
+        <div class="tables-header">
+          <span class="tables-title">Tables</span>
+          <span class="tables-count" id="tablesCount">0 / 12</span>
+        </div>
+        <div class="tables-add-row" id="tablesAddRow">
+          <input class="tables-add-input" id="tableNameInput" type="text" placeholder="Table name…" maxlength="20" autocomplete="off" />
+          <button class="action-btn primary" id="addTableBtn">+ Add</button>
+        </div>
+        <div class="tables-grid" id="tablesGrid"></div>
+        <div class="tables-award hidden" id="tablesAward">
+          <div class="award-points" id="awardPoints"></div>
+          <button class="action-btn" id="awardNobody">Nobody got it</button>
+        </div>
+      </div>
       <div class="actions">
         <button class="action-btn hidden" id="revealBtn">
           <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
