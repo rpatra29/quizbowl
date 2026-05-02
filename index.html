@@ -46,8 +46,8 @@
         <div class="settings-row">
           <span class="settings-row-label">Answer Timer</span>
           <div style="display:flex;align-items:center;gap:8px">
-            <input type="range" id="timerSlider" min="5" max="30" value="10" />
-            <span class="speed-val" id="timerValue">10 s</span>
+            <input type="range" id="timerSlider" min="5" max="30" value="20" />
+            <span class="speed-val" id="timerValue">20 s</span>
           </div>
         </div>
         <div class="settings-row">
@@ -64,6 +64,7 @@
         <span class="status-dot" id="statusDot"></span>
         <span class="status-label" id="statusLabel">Ready</span>
         <span class="sentence-counter" id="sentenceCounter"></span>
+        <span class="points-hint" id="pointsHint"></span>
       </div>
       <div class="question-card">
         <div class="question-meta">
@@ -72,6 +73,7 @@
           <span id="qLevel">HS</span>
           <span id="qCategory">—</span>
         </div>
+        <div class="question-label" id="questionLabel"></div>
         <div class="question-text" id="questionDisplay">
           <span style="color:var(--text3);font-family:'DM Sans',sans-serif;font-size:1rem;font-style:italic;">Press Reset to begin.</span>
         </div>
@@ -85,10 +87,12 @@
         <button class="action-btn primary" id="nextQuestion">Next Question →</button>
       </div>
       <div class="timer-display" id="timerDisplay">
-        <span class="timer-number" id="timerNumber">10</span>
+        <span class="timer-number" id="timerNumber">20</span>
         <div class="timer-bar-wrap">
           <div class="timer-bar" id="timerBar" style="width:100%"></div>
         </div>
+        <button class="timer-start-btn" id="timerStartBtn">Start</button>
+        <button class="timer-stop-btn" id="timerStopBtn">Stop</button>
       </div>
       <div class="inline-answer hidden" id="inlineAnswer">
         <div class="inline-answer-header">

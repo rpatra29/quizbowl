@@ -1,3 +1,12 @@
+// CLASSROOM MODE FLOW (teacher-driven, sentence by sentence):
+// 1. Teacher presses Reset → first sentence starts reading (slow character reveal)
+// 2. Sentence finishes → Teacher manually starts timer (for kids to write answer on whiteboard)
+// 3. Teacher can stop timer anytime by clicking Stop button
+// 4. Teacher manually presses "Next Sentence" (J key) to reveal sentence 2
+// 5. Teacher manually starts timer again
+// 6. Repeat until all sentences shown
+// TIMER IS PURELY MANUAL AND INDEPENDENT - it does not auto-start or affect game state.
+
 let questions = [];
 
 let state = {
@@ -9,10 +18,10 @@ let state = {
   isBuzzed: false,
   isDone: false,
   cps: 50,
-  timerDuration: 10,
+  timerDuration: 20,
   readInterval: null,
   timerInterval: null,
-  timeRemaining: 10,
+  timeRemaining: 20,
   history: [],
   tables: [],         // { name, score, correct, wrong, awardedThisQ }
   awardedThisQ: false,
@@ -41,6 +50,8 @@ const els = {
   timerDisplay: $('timerDisplay'),
   timerBar: $('timerBar'),
   timerNumber: $('timerNumber'),
+  timerStartBtn: $('timerStartBtn'),
+  timerStopBtn: $('timerStopBtn'),
   speedSlider: $('speedSlider'),
   speedValue: $('speedValue'),
   timerSlider: $('timerSlider'),
@@ -53,6 +64,8 @@ const els = {
   themeToggle: $('themeToggle'),
   cogBtn: $('cogBtn'),
   settingsOverlay: $('settingsOverlay'),
+  questionLabel: $('questionLabel'),
+  pointsHint: $('pointsHint'),
   qYear: $('qYear'),
   qTournament: $('qTournament'),
   qLevel: $('qLevel'),
@@ -94,7 +107,14 @@ function setStatus(cls, txt) {
 }
 
 function updateCounter() {
-  els.sentenceCounter.textContent = state.sentences.length ? `${Math.min(state.sentIdx, state.sentences.length)} / ${state.sentences.length}` : '';
+  if (state.sentences.length) {
+    els.sentenceCounter.textContent = `${Math.min(state.sentIdx, state.sentences.length)} / ${state.sentences.length}`;
+    els.pointsHint.textContent = getPointsForSentence() + ' pts';
+    els.pointsHint.style.display = '';
+  } else {
+    els.sentenceCounter.textContent = '';
+    els.pointsHint.style.display = 'none';
+  }
 }
 
 function buildPips() {
@@ -108,7 +128,11 @@ function buildPips() {
 
 function updatePips() {
   els.sentenceProgress.querySelectorAll('.sentence-pip').forEach((p, i) => {
-    p.className = 'sentence-pip' + (i < state.sentIdx ? ' done' : i === state.sentIdx ? ' current' : '');
+    if (i < state.sentIdx) {
+      if (!p.classList.contains('done')) p.className = 'sentence-pip done';
+    } else {
+      p.className = 'sentence-pip' + (i === state.sentIdx ? ' current' : '');
+    }
   });
 }
 
@@ -127,7 +151,6 @@ function initQuestion() {
   state.tables.forEach(t => { t.awardedThisQ = false; });
   els.questionDisplay.innerHTML = '';
   els.answerCard.classList.remove('visible');
-  els.timerDisplay.classList.remove('visible');
   closeInlineAnswer();
   if (!state.isAuto) renderTables();
   if (state.isAuto) {
@@ -147,6 +170,22 @@ function initQuestion() {
       els.buzzHint.innerHTML = '<kbd>Space</kbd> to reveal answer &nbsp;·&nbsp; <kbd>J</kbd> for next sentence (Classroom)';
     }
   }
+  els.questionLabel.textContent = q.label || '';
+  els.questionLabel.style.display = q.label ? '' : 'none';
+  const lbl = (q.label || '').toLowerCase();
+  const promptText =
+    lbl.includes('historical event') || lbl.includes('event') ? ' What is the historical event?' :
+    lbl.includes('person')    ? ' Who is this person?' :
+    lbl.includes('place')     ? ' What is this place?' :
+    lbl.includes('condition') ? ' What is this condition?' :
+                                ' What is the answer?';
+  const promptSpan = document.createElement('span');
+  promptSpan.className = 'inline-prompt';
+  promptSpan.textContent = promptText;
+  els.questionDisplay.appendChild(promptSpan);
+  const hasMeta = q.year || q.tournament || q.category;
+  const metaEl = document.querySelector('.question-meta');
+  if (metaEl) metaEl.style.display = hasMeta ? '' : 'none';
   els.qYear.textContent = q.year || '—';
   els.qTournament.textContent = q.tournament || '—';
   els.qLevel.textContent = q.level || 'HS';
@@ -175,8 +214,10 @@ function startReading() {
   const span = document.createElement('span');
   const cursor = document.createElement('span');
   cursor.className = 'cursor-blink';
-  els.questionDisplay.appendChild(span);
-  els.questionDisplay.appendChild(cursor);
+  const prompt = els.questionDisplay.querySelector('.inline-prompt');
+  if (prompt) prompt.style.visibility = 'hidden';
+  els.questionDisplay.insertBefore(span, prompt);
+  els.questionDisplay.insertBefore(cursor, prompt);
   state.readInterval = setInterval(() => {
     if (i < full.length) {
       span.textContent += full[i];
@@ -184,6 +225,7 @@ function startReading() {
     } else {
       stopReading();
       cursor.remove();
+      if (prompt) prompt.style.visibility = '';
       state.sentIdx++;
       updateCounter();
       updatePips();
@@ -194,7 +236,6 @@ function startReading() {
       } else {
         state.isDone = true;
         setStatus('done', 'Complete');
-        if (state.isAuto) startTimer();
       }
     }
   }, 1000 / state.cps);
@@ -320,7 +361,6 @@ function showAnswer() {
   updateCounter();
   updatePips();
   stopTimer();
-  els.timerDisplay.classList.remove('visible');
   els.revealBtn.classList.add('hidden');
   setStatus('done', 'Revealed');
   if (!state.isAuto) renderTables();
@@ -328,7 +368,7 @@ function showAnswer() {
 
 function startTimer() {
   state.timeRemaining = state.timerDuration;
-  els.timerDisplay.classList.add('visible');
+  els.timerDisplay.classList.add('running');
   els.timerNumber.textContent = state.timerDuration;
   els.timerNumber.className = 'timer-number';
   els.timerBar.style.width = '100%';
@@ -337,13 +377,12 @@ function startTimer() {
     state.timeRemaining -= 0.1;
     els.timerBar.style.width = Math.max(0, (state.timeRemaining / state.timerDuration) * 100) + '%';
     els.timerNumber.textContent = Math.ceil(state.timeRemaining);
-    if (state.timeRemaining <= 3) {
+    if (state.timeRemaining <= 5) {
       els.timerBar.className = 'timer-bar urgent';
       els.timerNumber.className = 'timer-number urgent';
     }
     if (state.timeRemaining <= 0) {
       stopTimer();
-      showAnswer();
     }
   }, 100);
 }
@@ -351,6 +390,11 @@ function startTimer() {
 function stopTimer() {
   clearInterval(state.timerInterval);
   state.timerInterval = null;
+  els.timerDisplay.classList.remove('running');
+  els.timerNumber.textContent = state.timerDuration;
+  els.timerNumber.className = 'timer-number';
+  els.timerBar.style.width = '100%';
+  els.timerBar.className = 'timer-bar';
 }
 
 function addToHistory(idx) {
@@ -388,14 +432,10 @@ function renderHistory() {
 
 // ── Classroom Tables ─────────────────────────────────────
 
-const SCORING = [300, 200, 100, 50]; // after sentence 1, 2, 3, full/4+
-
 function getPointsForSentence() {
-  // sentIdx = how many sentences have been fully read
-  // 1 → 300, 2 → 200, 3 → 100, 4+ → 50
-  if (state.sentIdx === 0) return SCORING[0];
-  const idx = Math.min(state.sentIdx, SCORING.length) - 1;
-  return SCORING[idx];
+  // N sentences: 500 before any reveal, drops 100 each sentence, min 100
+  const n = state.sentences.length || 1;
+  return Math.max(100, (n - state.sentIdx) * 100);
 }
 
 function addTable(name) {
@@ -573,7 +613,6 @@ els.manualBtn.addEventListener('click', () => {
   if (els.buzzHint) els.buzzHint.innerHTML = '<kbd>Space</kbd> to reveal answer &nbsp;·&nbsp; <kbd>J</kbd> for next sentence (Classroom)';
   toggleTablesVisibility();
   stopTimer();
-  els.timerDisplay.classList.remove('visible');
   initQuestion();
 });
 
@@ -633,6 +672,9 @@ document.addEventListener('keydown', e => {
     else els.nextSentenceBtn.click();
   }
 });
+
+els.timerStartBtn.addEventListener('click', () => startTimer());
+els.timerStopBtn.addEventListener('click', () => stopTimer());
 
 // ── Boot: load questions then start ───────────────────────
 
