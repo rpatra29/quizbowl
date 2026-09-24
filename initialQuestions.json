@@ -1,34 +1,52 @@
 [
   {
-    "answer": "Transcontinental Railroad",
-    "clue": "Before this development, moving products like food, cloth, and tools across the country took many months and was very expensive. Farmers, miners, and factory owners struggled to get their goods to customers on the other side of the country. Once this was completed, businesses could ship products from coast to coast in about a week, transforming the American economy."
+    "answer": "The Stock Market Crash of 1929",
+    "label": "This answer is a historical event",
+    "clue": "This economic event happened on a single day in October 1929. On that day, the value of something millions of Americans had bought with their savings suddenly collapsed to almost nothing. Wealthy businessmen, everyday workers, and farmers who had borrowed money were all left with nothing overnight. This disaster happened in New York City and marked the beginning of the worst economic crisis in American history."
   },
   {
-    "answer": "Union Pacific Railroad",
-    "clue": "This company was one of the two railroads that built the Transcontinental Railroad, and it started building from the east. Its workers, many of them Irish immigrants and Civil War veterans, laid tracks heading west across the flat Great Plains. It began its route in Omaha, Nebraska, and raced to lay as many miles of track as possible."
+    "answer": "Unemployment",
+    "label": "This answer is a word that describes a situation",
+    "clue": "This was a condition that affected a huge number of American workers during the Great Depression. At the worst point, out of every four workers in America, one of them had no job at all. People who had once held steady jobs found themselves standing on street corners hoping for work. Families sold their possessions and moved in with relatives just to survive. The government set up offices where people in this condition could go to look for help."
   },
   {
-    "answer": "Sierra Nevada mountains",
-    "clue": "This was a famous, difficult obstacle that workers on the Central Pacific Railroad could not go around and had to go through. Using explosives like black powder and a new chemical called nitroglycerin, workers carved a path through solid rock. This enormous range of mountains in California tested the railroad builders more than any other part of the route."
+    "answer": "Breadlines / Soup Kitchens",
+    "label": "This answer is a type of place or program",
+    "clue": "These were a type of food program that appeared in American cities during the Great Depression. Charities and churches set them up so that people who had no money could still get a meal. A person would walk up, wait their turn, and receive a bowl of soup or a piece of bread for free. On any given day in the early 1930s, thousands of hungry people could be seen standing in these long lines on city streets. At their peak, some of these lines stretched for entire city blocks."
   },
   {
-    "answer": "Chinese immigrant workers",
-    "clue": "This group of workers was hired by the Central Pacific Railroad and made up a large portion of the railroad's workforce. They came from a country in East Asia and were known for working incredibly hard through dangerous mountain terrain. They were paid less than other workers, but helped blast and carve the railroad through the Sierra Nevada mountains in California."
+    "answer": "Bank Failures",
+    "label": "This answer is a historical event",
+    "clue": "This economic crisis hit millions of American families in the early 1930s. People panicked and rushed to pull all their savings out of the bank at once. The banks ran out of money and had to close their doors forever. Families who had worked for decades to save money found that it had simply vanished overnight. President Roosevelt addressed this problem on his very first day in office by declaring a national \"bank holiday.\""
   },
   {
-    "answer": "The telegraph",
-    "clue": "This invention worked alongside the transcontinental railroad and helped connect the country in a different way — through communication instead of transportation. Wires were strung along the railroad's route as it was being built, allowing messages to travel coast to coast almost instantly. When the final spike was struck in 1869, this technology carried the news to the rest of the nation in seconds."
+    "answer": "Franklin D. Roosevelt",
+    "label": "This answer is a person",
+    "clue": "This American president took office in 1933. He immediately began pushing dozens of new programs through Congress to help struggling Americans. He gave radio speeches called \"fireside chats\" to calm a frightened nation and explain his plans in simple language. His collection of government relief and reform programs became known as the New Deal."
   },
   {
-    "answer": "Promontory Summit, Utah",
-    "clue": "This remote location in the American West became famous for a single day in May 1869. Two massive construction crews, one working from the east and one from the west, were racing toward each other for years before they finally met here. It is the place where the last spike of the transcontinental railroad was driven and the continent was connected by rail for the first time."
+    "answer": "The Dust Bowl",
+    "label": "This answer is a historical event",
+    "clue": "This environmental disaster struck a large region of the United States throughout the 1930s. For many years, farmers had removed the deep-rooted grasses that held the soil in place. Then a long period without rain dried out the land completely. When powerful winds swept across the plains, they picked up the loose soil and carried it for hundreds of miles. Enormous black clouds of dirt rolled across states like Oklahoma, Texas, and Kansas, burying farms and suffocating livestock."
   },
   {
-    "answer": "The Golden Spike",
-    "clue": "This object was driven into the ground at a special ceremony to mark the completion of the transcontinental railroad. Unlike ordinary railroad spikes, this one was made from a precious metal and became a symbol of the great achievement. A telegraph was connected to it so that when it was tapped with a hammer, the whole country would instantly know the railroad was done."
+    "answer": "Drought",
+    "label": "This answer is a word that describes a condition",
+    "clue": "This natural condition played a major role in making the Great Depression even worse for farmers. Month after month passed with no rain, and the land began to crack and dry out. Without rain, crops withered and died in the fields. The dry soil had nothing holding it to the ground. When wind swept across the Great Plains, it picked up the loose soil and carried it hundreds of miles away. This condition, combined with years of poor farming, helped create the massive dust storms of the 1930s."
   },
   {
-    "answer": "Leland Stanford",
-    "clue": "This man was the governor of California and one of the four businessmen who helped found the Central Pacific Railroad. He was so important to the project that he was given the honor of driving the final spike into the ground at the completion ceremony. He later used his fortune to found one of the world's most famous universities in California, which still bears his family's name today."
+    "answer": "Okies",
+    "label": "This answer is a word for a group of people",
+    "clue": "This nickname was given to a group of families who fled their homes during the 1930s. Their farms in Oklahoma and surrounding states had been destroyed by drought and dust storms. They packed everything they owned into old cars and trucks and left with nowhere to go. They traveled a famous highway called Route 66, heading west toward California. They hoped to find work on farms in California, but were often met with hostility and turned away."
+  },
+  {
+    "answer": "Hoovervilles",
+    "label": "This answer is a type of place",
+    "clue": "These were a type of settlement that appeared in American cities during the Great Depression. People who had lost their homes built them out of whatever scraps they could find — cardboard, tin, wood, and cloth. They were named mockingly after the president that many Americans blamed for the economic crisis. Large versions of these settlements appeared on the outskirts of cities like Los Angeles and Sacramento."
+  },
+  {
+    "answer": "Migration West",
+    "label": "This answer is a historical event",
+    "clue": "This is what historians call the massive movement of people from one part of the country to another during the 1930s. Drought, dust storms, and poverty pushed hundreds of thousands of families off their land in the Great Plains. Most of these families headed west, hoping that California's farms and warm climate meant there was work to be found. California's population grew dramatically during this period as a result of this movement of people."
   }
 ]
