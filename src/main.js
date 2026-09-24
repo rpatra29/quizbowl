@@ -94,8 +94,25 @@ const els = {
   addTableBtn: $('addTableBtn'),
   tablesAward: $('tablesAward'),
   awardPoints: $('awardPoints'),
-  awardNobody: $('awardNobody')
+  awardNobody: $('awardNobody'),
+  aiBuilderBtn: $('aiBuilderBtn'),
+  aiOverlay: $('aiOverlay'),
+  aiCloseBtn: $('aiCloseBtn'),
+  aiQuestionCount: $('aiQuestionCount'),
+  aiPrompt: $('aiPrompt'),
+  aiGenerateBtn: $('aiGenerateBtn'),
+  aiStatus: $('aiStatus'),
+  aiDraft: $('aiDraft'),
+  aiDraftTitle: $('aiDraftTitle'),
+  aiDraftCount: $('aiDraftCount'),
+  aiQuestionList: $('aiQuestionList'),
+  aiRevisionPrompt: $('aiRevisionPrompt'),
+  aiReviseBtn: $('aiReviseBtn'),
+  aiDownloadBtn: $('aiDownloadBtn'),
+  aiUseSetBtn: $('aiUseSetBtn')
 };
+
+let aiDraft = null;
 
 function parseSentences(t) {
   return (t.match(/[^.!?]+[.!?]+(?:\s|$)/g) || [t]).map(s => s.trim()).filter(Boolean);
@@ -675,6 +692,170 @@ document.addEventListener('keydown', e => {
 
 els.timerStartBtn.addEventListener('click', () => startTimer());
 els.timerStopBtn.addEventListener('click', () => stopTimer());
+
+// ── AI question set builder ──────────────────────────────
+
+function setAiStatus(message, isError = false) {
+  els.aiStatus.textContent = message;
+  els.aiStatus.classList.toggle('error', isError);
+}
+
+function setAiBusy(isBusy, label) {
+  els.aiGenerateBtn.disabled = isBusy;
+  els.aiReviseBtn.disabled = isBusy;
+  els.aiUseSetBtn.disabled = isBusy;
+  if (isBusy) setAiStatus(label);
+}
+
+function openAiBuilder() {
+  els.aiOverlay.classList.add('open');
+  els.aiOverlay.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => els.aiPrompt.focus(), 50);
+}
+
+function closeAiBuilder() {
+  els.aiOverlay.classList.remove('open');
+  els.aiOverlay.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+function validateQuestionSet(value) {
+  if (!value || !Array.isArray(value.questions) || value.questions.length === 0) {
+    throw new Error('The AI did not return a question set. Try again.');
+  }
+  if (value.questions.length > 30) {
+    throw new Error('The AI returned more than 30 questions.');
+  }
+  const cleaned = value.questions.map((q, index) => {
+    const answer = String(q.answer || '').trim();
+    const clue = String(q.clue || '').trim();
+    if (!answer || !clue) throw new Error(`Question ${index + 1} is missing an answer or clue.`);
+    return {
+      answer,
+      label: String(q.label || 'This answer is a term').trim(),
+      clue,
+      category: String(q.category || '').trim()
+    };
+  });
+  return { title: String(value.title || 'Generated question set').trim(), questions: cleaned };
+}
+
+async function requestQuestionSet(userPrompt) {
+  const response = await fetch('/api/generate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ prompt: userPrompt })
+  });
+
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(data.error || `Generation request failed (${response.status}).`);
+  }
+  return validateQuestionSet(data);
+}
+
+function renderAiDraft() {
+  els.aiDraftTitle.textContent = aiDraft.title;
+  els.aiDraftCount.textContent = `${aiDraft.questions.length} questions · review facts before use`;
+  els.aiQuestionList.innerHTML = '';
+  aiDraft.questions.forEach((question, index) => {
+    const item = document.createElement('article');
+    item.className = 'ai-question-item';
+    const answer = document.createElement('div');
+    answer.className = 'ai-question-answer';
+    answer.textContent = `${index + 1}. ${question.answer}`;
+    const meta = document.createElement('div');
+    meta.className = 'ai-question-meta';
+    meta.textContent = [question.category, question.label].filter(Boolean).join(' · ');
+    const clue = document.createElement('div');
+    clue.className = 'ai-question-clue';
+    clue.textContent = question.clue;
+    item.append(answer, meta, clue);
+    els.aiQuestionList.appendChild(item);
+  });
+  els.aiDraft.classList.remove('hidden');
+}
+
+async function generateAiSet() {
+  const prompt = els.aiPrompt.value.trim();
+  const count = Math.min(30, Math.max(1, parseInt(els.aiQuestionCount.value, 10) || 10));
+  els.aiQuestionCount.value = count;
+  if (!prompt) {
+    setAiStatus('Describe the class and question set first.', true);
+    els.aiPrompt.focus();
+    return;
+  }
+  setAiBusy(true, 'Generating…');
+  try {
+    aiDraft = await requestQuestionSet(`Create exactly ${count} questions. Teacher request:\n${prompt}`);
+    renderAiDraft();
+    setAiStatus('Draft ready. Review it or ask for changes.');
+  } catch (error) {
+    setAiStatus(error.message || 'Could not generate the set.', true);
+  } finally {
+    setAiBusy(false);
+  }
+}
+
+async function reviseAiSet() {
+  const revision = els.aiRevisionPrompt.value.trim();
+  if (!aiDraft || !revision) {
+    setAiStatus('Enter the changes you want to make.', true);
+    els.aiRevisionPrompt.focus();
+    return;
+  }
+  setAiBusy(true, 'Revising…');
+  try {
+    aiDraft = await requestQuestionSet(
+      `Revise the question set below according to the teacher's instructions. Preserve good questions unless the request calls for changing them.\n\nTeacher changes:\n${revision}\n\nCurrent set:\n${JSON.stringify(aiDraft)}`
+    );
+    els.aiRevisionPrompt.value = '';
+    renderAiDraft();
+    setAiStatus('Draft revised. Review it before use.');
+  } catch (error) {
+    setAiStatus(error.message || 'Could not revise the set.', true);
+  } finally {
+    setAiBusy(false);
+  }
+}
+
+function useAiSet() {
+  if (!aiDraft) return;
+  questions = aiDraft.questions;
+  state.qIdx = 0;
+  state.history = [];
+  renderHistory();
+  initQuestion();
+  closeAiBuilder();
+}
+
+function downloadAiSet() {
+  if (!aiDraft) return;
+  const blob = new Blob([JSON.stringify(aiDraft.questions, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  const safeTitle = aiDraft.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'question-set';
+  link.href = url;
+  link.download = `${safeTitle}.json`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+els.aiBuilderBtn.addEventListener('click', openAiBuilder);
+els.aiCloseBtn.addEventListener('click', closeAiBuilder);
+els.aiOverlay.addEventListener('click', event => {
+  if (event.target === els.aiOverlay) closeAiBuilder();
+});
+els.aiGenerateBtn.addEventListener('click', generateAiSet);
+els.aiReviseBtn.addEventListener('click', reviseAiSet);
+els.aiUseSetBtn.addEventListener('click', useAiSet);
+els.aiDownloadBtn.addEventListener('click', downloadAiSet);
+document.addEventListener('keydown', event => {
+  if (event.key === 'Escape' && els.aiOverlay.classList.contains('open')) closeAiBuilder();
+});
 
 // ── Boot: load questions then start ───────────────────────
 

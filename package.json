@@ -1,0 +1,12 @@
+{
+  "name": "thinkfast",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Browser-based quiz bowl reader and AI question-set builder",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
