@@ -12,6 +12,7 @@
     <header class="header">
       <div class="logo">Think <em>Fast</em></div>
       <div class="header-right">
+        <button class="action-btn ai-open-btn" id="aiBuilderBtn" type="button">✦ AI Set Builder</button>
         <div class="mode-toggle">
           <button class="mode-btn active" id="autoBtn">Solo</button>
           <button class="mode-btn" id="manualBtn">Classroom</button>
@@ -33,6 +34,59 @@
         </button>
       </div>
     </header>
+    <div class="ai-overlay" id="aiOverlay" aria-hidden="true">
+      <section class="ai-panel" role="dialog" aria-modal="true" aria-labelledby="aiTitle">
+        <div class="ai-panel-header">
+          <div>
+            <div class="ai-eyebrow">Teacher tools</div>
+            <h2 id="aiTitle">AI Question Set Builder</h2>
+          </div>
+          <button class="ai-close" id="aiCloseBtn" type="button" aria-label="Close AI question builder">&times;</button>
+        </div>
+
+        <div class="ai-security-note">
+          Describe what your students need, then review the generated questions for accuracy before using them in class.
+        </div>
+
+        <div class="ai-config-grid">
+          <label class="ai-field ai-field-wide">
+            <span>Number of questions</span>
+            <input id="aiQuestionCount" type="number" value="10" min="1" max="30" />
+          </label>
+        </div>
+
+        <label class="ai-field ai-prompt-field">
+          <span>Describe the class and question set</span>
+          <textarea id="aiPrompt" rows="5" placeholder="Example: Create a 5th-grade review on the American Revolution. Use accessible language, cover causes and major people, and make each question progressively easier across 4–5 sentences."></textarea>
+        </label>
+
+        <div class="ai-actions-row">
+          <button class="action-btn primary" id="aiGenerateBtn" type="button">Generate question set</button>
+          <span class="ai-status" id="aiStatus" role="status" aria-live="polite"></span>
+        </div>
+
+        <div class="ai-draft hidden" id="aiDraft">
+          <div class="ai-draft-header">
+            <div>
+              <div class="ai-eyebrow">Draft</div>
+              <h3 id="aiDraftTitle">Generated question set</h3>
+            </div>
+            <span id="aiDraftCount"></span>
+          </div>
+          <div class="ai-question-list" id="aiQuestionList"></div>
+
+          <label class="ai-field ai-prompt-field">
+            <span>Ask for changes</span>
+            <textarea id="aiRevisionPrompt" rows="3" placeholder="Example: Make question 3 easier, replace question 6 with one about women in the Revolution, and shorten every clue to four sentences."></textarea>
+          </label>
+          <div class="ai-actions-row ai-draft-actions">
+            <button class="action-btn" id="aiReviseBtn" type="button">Revise draft</button>
+            <button class="action-btn" id="aiDownloadBtn" type="button">Download JSON</button>
+            <button class="action-btn primary" id="aiUseSetBtn" type="button">Use this set</button>
+          </div>
+        </div>
+      </section>
+    </div>
     <div class="settings-overlay" id="settingsOverlay">
       <div class="settings-panel">
         <div class="settings-title">Settings</div>

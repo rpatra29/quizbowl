@@ -53,6 +53,241 @@ body {
   transition: background .25s, color .25s;
 }
 
+/* AI QUESTION SET BUILDER */
+.ai-open-btn {
+  white-space: nowrap;
+  color: var(--accent);
+  border-color: var(--accent2);
+}
+
+.ai-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  padding: 24px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, .72);
+  backdrop-filter: blur(4px);
+}
+
+.ai-overlay.open {
+  display: block;
+}
+
+.ai-panel {
+  width: min(760px, 100%);
+  margin: 20px auto;
+  padding: 28px;
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .55);
+}
+
+.ai-panel-header,
+.ai-draft-header,
+.ai-actions-row,
+.ai-key-row {
+  display: flex;
+  align-items: center;
+}
+
+.ai-panel-header,
+.ai-draft-header {
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ai-panel h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.ai-panel h3 {
+  font-family: 'Lora', serif;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.ai-eyebrow,
+.ai-field > span {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text3);
+}
+
+.ai-close {
+  border: 0;
+  background: transparent;
+  color: var(--text2);
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ai-security-note {
+  margin: 20px 0;
+  padding: 12px 14px;
+  border-left: 3px solid var(--accent);
+  background: var(--bg3);
+  color: var(--text2);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.ai-config-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.ai-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ai-field-wide {
+  grid-column: 1 / -1;
+}
+
+.ai-field input,
+.ai-field textarea {
+  width: 100%;
+  padding: 11px 12px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 3px;
+  font: inherit;
+  resize: vertical;
+}
+
+.ai-field input:focus,
+.ai-field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.ai-key-row {
+  gap: 8px;
+}
+
+.ai-prompt-field {
+  margin-top: 18px;
+}
+
+.ai-advanced summary {
+  color: var(--text2);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ai-advanced .ai-field {
+  margin-top: 10px;
+}
+
+.ai-actions-row {
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.ai-status {
+  color: var(--text2);
+  font-size: 12px;
+}
+
+.ai-status.error {
+  color: var(--red);
+}
+
+.ai-draft {
+  margin-top: 24px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+
+#aiDraftCount {
+  color: var(--text3);
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+}
+
+.ai-question-list {
+  max-height: 340px;
+  margin-top: 14px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+}
+
+.ai-question-item {
+  padding: 13px 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ai-question-item:last-child {
+  border-bottom: 0;
+}
+
+.ai-question-answer {
+  color: var(--accent);
+  font-family: 'Lora', serif;
+  font-weight: 600;
+}
+
+.ai-question-meta,
+.ai-question-clue {
+  margin-top: 4px;
+  color: var(--text2);
+  font-size: 12px;
+}
+
+.ai-question-clue {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ai-draft-actions {
+  justify-content: flex-end;
+}
+
+.ai-actions-row button:disabled {
+  cursor: wait;
+  opacity: .55;
+}
+
+@media (max-width: 720px) {
+  .ai-open-btn {
+    padding-inline: 10px;
+    font-size: 10px;
+  }
+
+  .ai-overlay {
+    padding: 0;
+  }
+
+  .ai-panel {
+    min-height: 100vh;
+    margin: 0;
+    padding: 22px 18px;
+  }
+
+  .ai-config-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ai-field-wide {
+    grid-column: auto;
+  }
+}
+
 /* HEADER */
 .header {
   max-width: 860px;
@@ -1178,6 +1413,16 @@ input[type=range] {
   .header {
     flex-wrap: wrap;
     gap: 12px;
+  }
+
+  .header-right {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .ai-open-btn {
+    order: 3;
+    width: 100%;
   }
 
   .question-card {
